@@ -66,58 +66,6 @@ public struct StackPagesView<Item: Identifiable, Content: View>: View {
     }
 }
 
-#Preview {
-    
-    
-    struct Item: Identifiable {
-        var id: String = UUID().uuidString
-        var name: String
-        var color: Color = .yellow
-    }
-    
-    struct PageView: View {
-        @Environment(\.stackPageState) private var stackPageState
-        let id: String
-        let color: Color
-        let name: String
-        var body: some View {
-            ZStack {
-                color
-                Text(name)
-                Text(stackPageState[id]?.rawValue ?? "NIL")
-                    .offset(y: -100)
-            }
-        }
-    }
-    
-    struct TestView2: View {
-        let items = (0...10).map({Item(name: String($0))})
-        @State var currentIndex: Int = 0
-        var body: some View {
-            StackPagesView(views: items) { content in
-                PageView(id: content.id, color: content.color, name: content.name)
-                
-            }
-                .onChangeIndex($currentIndex)
-                .cardStyle(radius: 30)
-                .onReachedEnd{ direction in
-                    print(direction)
-                }
-                .ignoresSafeArea()
-                .overlay(alignment: .top) {
-                    HStack {
-                        Text("\(currentIndex)")
-                        Stepper("Index", value: $currentIndex, in: -1...11)
-                    }
-                   
-                }
-        }
-    }
-    
-    return TestView2()
-
-}
-
 //MARK: - Views
 extension StackPagesView {
     
@@ -408,3 +356,53 @@ public extension StackPagesView {
     }
 }
 
+#Preview {
+
+    struct Item: Identifiable {
+        var id: String = UUID().uuidString
+        var name: String
+        var color: Color = .yellow
+    }
+    
+    struct PageView: View {
+        @Environment(\.stackPageState) private var stackPageState
+        let id: String
+        let color: Color
+        let name: String
+        var body: some View {
+            ZStack {
+                color
+                Text(name)
+                Text(stackPageState[id]?.rawValue ?? "NIL")
+                    .offset(y: -100)
+            }
+        }
+    }
+    
+    struct TestView2: View {
+        let items = (0...10).map({Item(name: String($0))})
+        @State var currentIndex: Int = 0
+        var body: some View {
+            StackPagesView(views: items) { content in
+                PageView(id: content.id, color: content.color, name: content.name)
+                
+            }
+                .onChangeIndex($currentIndex)
+                .cardStyle(radius: 30)
+                .onReachedEnd{ direction in
+                    print(direction)
+                }
+                .ignoresSafeArea()
+                .overlay(alignment: .top) {
+                    HStack {
+                        Text("\(currentIndex)")
+                        Stepper("Index", value: $currentIndex, in: -1...11)
+                    }
+                   
+                }
+        }
+    }
+    
+    return TestView2()
+
+}

@@ -116,7 +116,7 @@ public struct StoryPageGroupView<Content: View>: View {
         guard hasNext, next != index else { return }
         index = next
     }
-        
+    
     private func resetAnimateProgress() {
         Task {
             try? await Task.sleep(for: .seconds(0.05))
@@ -153,75 +153,6 @@ extension StoryPageGroupView.Direction {
         }
     }
 }
-
-
-#Preview {
-    
-    TestView()
-    
-}
-
-
-struct TestView: View {
-    let group = AnyStoryGroup(pages: [TestPage2(num: 1), TestPage(num: 2), TestPage(num: 3)])
-    var body: some View {
-        StoryPageGroupView(group: group, onReached: {_ in}) { progressView in
-            VStack {
-                progressView
-                    .style(height: 6, fillColor: .black, backgroundColor: .white.opacity(0.1), itemsSpacing: 2)
-            }
-            .padding()
-        }
-    }
-    
-    struct TestPage: StoryPageable {
-        @Environment(\.storyInPause) var isPaused
-        var duration: TimeInterval = 4
-        
-        let num: Int
-        var id: String {
-            "\(num)"
-        }
-        
-        var content: some View {
-            ZStack {
-                Color.red
-                    .allowsHitTesting(false)
-                VStack {
-                    Text("Page \(num)")
-                    Button {
-                        isPaused.wrappedValue.toggle()
-                    } label: {
-                        Text(isPaused.wrappedValue ? "Resume" : "Pause")
-                    }
-                    .zIndex(100)
-                }
-               
-            }
-            
-        }
-    }
-    
-    struct TestPage2: StoryPageable {
-        
-        var duration: TimeInterval = 2
-        let num: Int
-        var id: String {
-            "\(num)"
-        }
-        
-        var content: some View {
-            ZStack {
-                Color.green
-                    .allowsHitTesting(false)
-                Text("Page \(num)")
-                
-            }
-        }
-        
-    }
-}
-
 
 public struct StoryProgressView: View {
     @ObservedObject var timer: StoriesGroupTimer
@@ -317,4 +248,71 @@ private extension View {
         self
             .modifier(TapAndLongPressModifier(tapAction: tapAction, longPressAction: longPressAction))
     }
+}
+
+
+#Preview {
+    
+    struct TestView: View {
+        let group = AnyStoryGroup(pages: [TestPage2(num: 1), TestPage(num: 2), TestPage(num: 3)])
+        var body: some View {
+            StoryPageGroupView(group: group, onReached: {_ in}) { progressView in
+                VStack {
+                    progressView
+                        .style(height: 6, fillColor: .black, backgroundColor: .white.opacity(0.1), itemsSpacing: 2)
+                }
+                .padding()
+            }
+        }
+        
+        struct TestPage: StoryPageable {
+            @Environment(\.storyInPause) var isPaused
+            var duration: TimeInterval = 4
+            
+            let num: Int
+            var id: String {
+                "\(num)"
+            }
+            
+            var content: some View {
+                ZStack {
+                    Color.red
+                        .allowsHitTesting(false)
+                    VStack {
+                        Text("Page \(num)")
+                        Button {
+                            isPaused.wrappedValue.toggle()
+                        } label: {
+                            Text(isPaused.wrappedValue ? "Resume" : "Pause")
+                        }
+                        .zIndex(100)
+                    }
+                    
+                }
+                
+            }
+        }
+        
+        struct TestPage2: StoryPageable {
+            
+            var duration: TimeInterval = 2
+            let num: Int
+            var id: String {
+                "\(num)"
+            }
+            
+            var content: some View {
+                ZStack {
+                    Color.green
+                        .allowsHitTesting(false)
+                    Text("Page \(num)")
+                    
+                }
+            }
+            
+        }
+    }
+    
+    return TestView()
+    
 }
