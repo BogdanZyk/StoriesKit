@@ -12,6 +12,11 @@
 
 ---
 
+### Example of stories with pictures and video 
+[![Preview](http://img.youtube.com/vi/X71W0H79Wh4/0.jpg)](https://www.youtube.com/watch?v=X71W0H79Wh4)
+
+---
+
 ## Example Usage
 
 ```swift
