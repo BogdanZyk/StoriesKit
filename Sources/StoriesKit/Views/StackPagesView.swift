@@ -162,13 +162,13 @@ extension StackPagesView {
         
         currentDirection = currentDirection ?? StackSwipeDirection.getDirection(from: gesture.translation.width)
         
-        if canMoveFurther {
-            withAnimation(.linear(duration: 0.1)) {
-                dragOffset = gesture.translation.width * 0.9
-            }
-            if pagesStateData[views[currentIndex].id] != .inSwiped {
-                changePageState(for: currentIndex, .inSwiped)
-            }
+        let offsetRatio = canMoveFurther ? 0.9 : (currentDirection == .next ? 0.3 : 0.1)
+        withAnimation(.linear(duration: 0.1)) {
+            dragOffset = gesture.translation.width * offsetRatio
+        }
+        
+        if pagesStateData[views[currentIndex].id] != .inSwiped {
+            changePageState(for: currentIndex, .inSwiped)
         }
     }
     
