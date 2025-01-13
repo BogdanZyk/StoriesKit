@@ -20,7 +20,7 @@ public final class StoriesGroupTimer: ObservableObject {
     private(set) var currentIntervalIndex: Int = 0
     
     /// Boolean to track whether the timer is paused.
-    private var isPause: Bool = false
+    private(set) var isPause: Bool = false
     
     /// Publisher used for generating periodic timer ticks.
     private var timer: Timer.TimerPublisher?
@@ -155,6 +155,7 @@ public final class StoriesGroupTimer: ObservableObject {
     }
     
     /// Moves the timer to the previous interval or resets it based on elapsed time.
+    @discardableResult
     func toPreviewInterval() -> Int {
         stop()
         let previewIndex = currentIntervalIndex - 1
